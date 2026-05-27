@@ -213,7 +213,6 @@
     try {
       const sub = await apiGet("/me/subscription", session.access_token);
       renderPlans(sub, session.access_token);
-      showStatus("Signed in. Choose a plan below, then open Easy VAT on your phone and refresh your profile.", false);
     } catch (e) {
       showStatus("Could not load subscription: " + (e.message || "error"), true);
     }
