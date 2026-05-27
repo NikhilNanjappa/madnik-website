@@ -21,13 +21,18 @@
   const cfg = window.EASYVAT_CONFIG;
   if (!cfg?.SUPABASE_URL || !cfg?.SUPABASE_ANON_KEY || !cfg?.API_BASE_URL) {
     showConfigError(
-      "Copy js/config.example.js to js/config.js and set SUPABASE_ANON_KEY and API_BASE_URL."
+      "Set SUPABASE_ANON_KEY (publishable) and API_BASE_URL in js/config.js."
     );
     return;
   }
 
   const { createClient } = supabase;
-  const client = createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
+  const client = createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY, {
+    auth: {
+      detectSessionInUrl: true,
+      persistSession: true,
+    },
+  });
   const apiBase = cfg.API_BASE_URL.replace(/\/$/, "");
 
   const el = {
@@ -62,10 +67,17 @@
   }
 
   function redirectUri() {
-    const path = window.location.pathname.endsWith("/")
-      ? window.location.pathname
-      : window.location.pathname.replace(/\/[^/]*$/, "/");
-    return window.location.origin + path;
+    const configured = (cfg.PRODUCT_REDIRECT_URL || "").trim();
+    if (configured) return configured;
+    const path = window.location.pathname;
+    if (path.endsWith(".html")) return window.location.origin + path;
+    const dir = path.endsWith("/") ? path : path.replace(/\/?$/, "/");
+    return window.location.origin + dir + (dir.endsWith("/") ? "index.html" : "");
+  }
+
+  function clearAuthHashFromUrl() {
+    if (!window.location.hash || window.location.hash.indexOf("access_token") === -1) return;
+    history.replaceState(null, "", window.location.pathname + window.location.search);
   }
 
   async function signIn(provider) {
@@ -195,12 +207,13 @@
       renderSignedOut();
       return;
     }
+    clearAuthHashFromUrl();
     const email = session.user?.email || "";
     renderSignedIn(email);
     try {
       const sub = await apiGet("/me/subscription", session.access_token);
       renderPlans(sub, session.access_token);
-      showStatus("Signed in. Choose a plan below, then return to the app on your phone.", false);
+      showStatus("Signed in. Choose a plan below, then open Easy VAT on your phone and refresh your profile.", false);
     } catch (e) {
       showStatus("Could not load subscription: " + (e.message || "error"), true);
     }
