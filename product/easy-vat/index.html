@@ -9,22 +9,30 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        /* Matches iOS/Android LoginView + DashboardDS */
         :root {
-            --ev-navy: #0f1d39;
-            --ev-mint: #48c9b0;
-            --ev-mint-dark: #3ab39c;
+            --login-bg: #f7f7f9;
+            --text-primary: #111827;
             --text: #1e293b;
             --text-light: #64748b;
-            --bg: #f8fafc;
+            --ev-navy: #0f1d39;
+            --ev-mint: #48c9b0;
             --card: #ffffff;
             --border: #e2e8f0;
+            --google-border: #747577;
+            --google-label: #3c4043;
+            --sso-radius: 8px;
+            --sso-pad-y: 12px;
+            --sso-logo: 20px;
+            --sso-gap: 8px;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: 'Work Sans', -apple-system, sans-serif;
+            font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             color: var(--text);
-            background: var(--bg);
+            background: var(--login-bg);
             line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
         }
         h1, h2, h3 { font-family: 'Syne', sans-serif; letter-spacing: -0.02em; }
         .nav {
@@ -46,75 +54,130 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .hero {
-            background: var(--ev-navy);
-            color: #fff;
-            padding: 3.5rem 2rem 3rem;
+        .container { max-width: 480px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+        .login-header {
             text-align: center;
+            margin-bottom: 1.5rem;
         }
-        .hero img {
-            width: 88px;
-            height: 88px;
-            border-radius: 18px;
-            margin: 0 auto 1.25rem;
+        .login-header img {
+            width: 72px;
+            height: 72px;
+            border-radius: 16px;
+            margin: 0 auto 12px;
             display: block;
-            box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+            box-shadow: 0 4px 16px rgba(15, 29, 57, 0.12);
         }
-        .hero h1 { font-size: 2.5rem; margin-bottom: 0.75rem; }
-        .hero p { max-width: 560px; margin: 0 auto; opacity: 0.92; font-size: 1.1rem; }
-        .container { max-width: 960px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+        .login-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        .login-header .tagline {
+            font-size: 1rem;
+            color: var(--text-light);
+            max-width: 360px;
+            margin: 0 auto;
+        }
         .card {
             background: var(--card);
             border-radius: 16px;
             border: 1px solid var(--border);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 8px 24px rgba(15,29,57,0.06);
+            padding: 1.75rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(15, 29, 57, 0.05);
         }
-        .card h2 { font-size: 1.35rem; margin-bottom: 1rem; color: var(--ev-navy); }
-        .auth-btns { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
-        .btn {
-            display: inline-block;
-            padding: 0.85rem 1.6rem;
-            border-radius: 999px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            border: none;
-            text-decoration: none;
-            transition: transform 0.2s, box-shadow 0.2s;
+        .card h2 {
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            text-align: center;
+            font-weight: 700;
         }
-        .btn:hover { transform: translateY(-2px); }
-        .btn-mint {
-            background: var(--ev-mint);
-            color: var(--ev-navy);
-            box-shadow: 0 6px 16px rgba(72,201,176,0.35);
-        }
-        .btn-outline {
-            background: transparent;
-            color: var(--ev-navy);
-            border: 2px solid var(--border);
-        }
-        .btn-ghost {
-            background: transparent;
+        .card .helper {
+            font-size: 0.9375rem;
             color: var(--text-light);
-            border: none;
-            text-decoration: underline;
-            padding: 0.5rem 0;
+            text-align: center;
+            margin-bottom: 0.25rem;
+            line-height: 1.5;
         }
+        .card .helper strong { color: var(--text); font-weight: 600; }
+        /* SSO buttons — same layout as LoginView.swift */
+        .sso-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 1.25rem;
+            width: 100%;
+        }
+        .btn-sso {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--sso-gap);
+            width: 100%;
+            padding: var(--sso-pad-y) 16px;
+            border-radius: var(--sso-radius);
+            font-family: inherit;
+            font-size: 1.0625rem;
+            font-weight: 600;
+            line-height: 1.25;
+            cursor: pointer;
+            transition: opacity 0.15s ease, box-shadow 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-sso:hover { opacity: 0.94; }
+        .btn-sso:active { opacity: 0.88; }
+        .btn-sso:focus-visible {
+            outline: 2px solid var(--ev-mint);
+            outline-offset: 2px;
+        }
+        .btn-google {
+            background: #ffffff;
+            color: var(--google-label);
+            border: 1px solid var(--google-border);
+        }
+        .btn-apple {
+            background: #000000;
+            color: #ffffff;
+            border: none;
+        }
+        .btn-sso-icon {
+            width: var(--sso-logo);
+            height: var(--sso-logo);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-sso-icon svg {
+            width: var(--sso-logo);
+            height: var(--sso-logo);
+            display: block;
+        }
+        .btn-sso-label { white-space: nowrap; }
         .hidden { display: none !important; }
         #user-email { font-weight: 600; color: var(--ev-navy); }
+        .plans-section h2 {
+            font-size: 1.25rem;
+            margin: 1.75rem 0 1rem;
+            color: var(--text-primary);
+        }
         .plans-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.25rem;
-            margin-top: 1.25rem;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        @media (min-width: 640px) {
+            .container { max-width: 960px; }
+            .login-block { max-width: 400px; margin: 0 auto; }
+            .plans-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
         }
         .plan-card {
             border: 1px solid var(--border);
             border-radius: 14px;
             padding: 1.5rem;
-            background: var(--bg);
+            background: var(--login-bg);
         }
         .plan-card h3 { font-size: 1.25rem; color: var(--ev-navy); margin-bottom: 0.5rem; }
         .plan-price .amount { font-size: 2rem; font-weight: 800; font-family: 'Syne', sans-serif; }
@@ -128,11 +191,22 @@
             border: none;
             border-radius: 10px;
             font-weight: 600;
+            font-size: 0.95rem;
             cursor: pointer;
         }
         .btn-plan:hover { background: #1a2d52; }
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-light);
+            border: none;
+            text-decoration: underline;
+            padding: 0.5rem 0;
+            font-size: 0.95rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
         .plans-all-set { color: var(--text-light); padding: 1rem 0; }
-        .status-msg { margin-top: 1rem; font-size: 0.95rem; }
+        .status-msg { margin-top: 1rem; font-size: 0.95rem; text-align: center; }
         .status-msg.ok { color: #047857; }
         .status-msg.error { color: #b91c1c; }
         .config-error {
@@ -142,20 +216,23 @@
             padding: 1rem;
             border-radius: 10px;
             margin-bottom: 1.5rem;
+            font-size: 0.9rem;
         }
         .trust {
-            font-size: 0.9rem;
+            font-size: 0.875rem;
             color: var(--text-light);
-            margin-top: 2rem;
+            margin-top: 1.5rem;
             text-align: center;
+            line-height: 1.6;
         }
         .trust a { color: #3b82f6; }
         footer {
             text-align: center;
-            padding: 2rem;
+            padding: 2rem 1.5rem;
             font-size: 0.85rem;
             color: var(--text-light);
             border-top: 1px solid var(--border);
+            background: #fff;
         }
     </style>
 </head>
@@ -169,37 +246,55 @@
         </div>
     </nav>
 
-    <header class="hero">
-        <img src="../../assets/easyvat-logo.png" alt="Easy VAT" width="88" height="88">
-        <h1>Easy VAT</h1>
-        <p>Capture or upload invoices, AI-powered VAT extraction, share — stay organised.</p>
-    </header>
-
     <main class="container">
         <div id="config-error" class="config-error hidden">
-            Site configuration is missing. Copy <code>js/config.example.js</code> to <code>js/config.js</code> and add your Supabase anon key.
+            Site configuration is missing. Copy <code>js/config.example.js</code> to <code>js/config.js</code> and add your Supabase publishable key.
         </div>
 
-        <section id="signed-out" class="card">
-            <h2>Sign in to your account</h2>
-            <p>Use the <strong>same Google or Apple account</strong> as in the Easy VAT app on your phone. After sign-in you can choose a plan and complete checkout securely.</p>
-            <div class="auth-btns">
-                <button type="button" class="btn btn-mint" id="sign-in-google">Continue with Google</button>
-                <button type="button" class="btn btn-outline" id="sign-in-apple">Continue with Apple</button>
-            </div>
-        </section>
+        <div class="login-block">
+            <header class="login-header">
+                <img src="../../assets/easyvat-logo.png" alt="" width="72" height="72">
+                <h1>Easy VAT</h1>
+                <p class="tagline">Capture or upload invoices, AI-powered VAT extraction, share — stay organised.</p>
+            </header>
 
-        <section id="signed-in" class="card hidden">
-            <h2>Your account</h2>
-            <p>Signed in as <span id="user-email"></span></p>
-            <p style="margin-top:0.75rem;color:var(--text-light);font-size:0.95rem;">
-                After payment, open the Easy VAT app and pull to refresh your profile — your plan updates automatically.
-            </p>
-            <button type="button" class="btn btn-ghost" id="sign-out">Sign out</button>
-            <h2 style="margin-top:2rem;">Choose a plan</h2>
-            <div id="plans" class="plans-grid"></div>
-            <p id="status" class="status-msg" hidden></p>
-        </section>
+            <section id="signed-out" class="card">
+                <h2>Sign in to continue</h2>
+                <p class="helper">Use the <strong>same Google or Apple account</strong> as in the Easy VAT app on your phone.</p>
+                <div class="sso-stack">
+                    <button type="button" class="btn-sso btn-google" id="sign-in-google" aria-label="Sign in with Google">
+                        <span class="btn-sso-icon" aria-hidden="true">
+                            <img src="../../assets/google-g.svg" alt="" width="20" height="20">
+                        </span>
+                        <span class="btn-sso-label">Sign in with Google</span>
+                    </button>
+                    <button type="button" class="btn-sso btn-apple" id="sign-in-apple" aria-label="Sign in with Apple">
+                        <span class="btn-sso-icon" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M17.05 12.64c.03-2.31 1.89-3.42 1.97-3.48-1.07-1.56-2.73-1.77-3.32-1.8-1.41-.14-2.75.83-3.47.83-.72 0-1.83-.81-3.01-.79-1.55.02-2.98.9-3.78 2.29-1.61 2.79-.41 6.92 1.16 9.19.77 1.11 1.69 2.35 2.9 2.31 1.17-.05 1.61-.75 3.03-.75 1.42 0 1.82.75 3.05.72 1.26-.02 2.06-1.13 2.82-2.24.89-1.3 1.26-2.56 1.28-2.62-.03-.01-2.46-.94-2.49-3.74zm-2.53-7.85c.65-.79 1.08-1.89.96-2.99-.93.04-2.05.62-2.72 1.41-.6.69-1.12 1.8-.98 2.86 1.04.08 2.09-.53 2.74-1.28z"/>
+                            </svg>
+                        </span>
+                        <span class="btn-sso-label">Sign in with Apple</span>
+                    </button>
+                </div>
+            </section>
+
+            <section id="signed-in" class="card hidden">
+                <h2>Your account</h2>
+                <p style="text-align:center;">Signed in as <span id="user-email"></span></p>
+                <p class="helper" style="margin-top:0.75rem;">
+                    After payment, open the Easy VAT app and pull to refresh your profile — your plan updates automatically.
+                </p>
+                <p style="text-align:center;">
+                    <button type="button" class="btn-ghost" id="sign-out">Sign out</button>
+                </p>
+                <div class="plans-section">
+                    <h2>Choose a plan</h2>
+                    <div id="plans" class="plans-grid"></div>
+                    <p id="status" class="status-msg" hidden></p>
+                </div>
+            </section>
+        </div>
 
         <p class="trust">
             Payments are processed by Stripe. Madnik Limited · <a href="../../privacy.html">Privacy policy</a> ·
