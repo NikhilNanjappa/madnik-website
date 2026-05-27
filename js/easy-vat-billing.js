@@ -90,8 +90,9 @@
   }
 
   async function signOut() {
-    await client.auth.signOut();
     renderSignedOut();
+    const { error } = await client.auth.signOut({ scope: "local" });
+    if (error) showStatus(error.message, true);
   }
 
   function renderSignedOut() {
@@ -220,8 +221,17 @@
 
   el.signInGoogle?.addEventListener("click", () => signIn("google"));
   el.signInApple?.addEventListener("click", () => signIn("apple"));
-  el.signOut?.addEventListener("click", () => signOut());
+  el.signOut?.addEventListener("click", (e) => {
+    e.preventDefault();
+    signOut();
+  });
 
-  client.auth.onAuthStateChange(() => refreshSession());
+  client.auth.onAuthStateChange((event, session) => {
+    if (event === "SIGNED_OUT" || !session) {
+      renderSignedOut();
+      return;
+    }
+    refreshSession();
+  });
   refreshSession();
 })();
