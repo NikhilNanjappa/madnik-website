@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Easy VAT — plans and account setup. AI-powered VAT extraction for invoices on iOS and Android.">
+    <meta name="description" content="Easy VAT — Capture and Calculate VAT. Manage your plan and account. AI calculates VAT instantly from invoices. UK VAT made simple.">
     <title>Easy VAT — Plans | MADNIK</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -71,13 +71,20 @@
             font-size: 2rem;
             font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.35rem;
+        }
+        .login-header .subtitle {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--ev-navy);
+            margin-bottom: 0.5rem;
         }
         .login-header .tagline {
             font-size: 1rem;
             color: var(--text-light);
-            max-width: 360px;
+            max-width: 400px;
             margin: 0 auto;
+            line-height: 1.55;
         }
         .card {
             background: var(--card);
@@ -255,7 +262,8 @@
             <header class="login-header">
                 <img src="../../assets/easyvat-logo.png" alt="" width="72" height="72">
                 <h1>Easy VAT</h1>
-                <p class="tagline">Capture or upload invoices, AI-powered VAT extraction, share — stay organised.</p>
+                <p class="subtitle">Capture and Calculate VAT</p>
+                <p class="tagline">AI calculates VAT instantly from invoices. Track your total VAT in your current cycle. Calculating &amp; tracking UK VAT made simple.</p>
             </header>
 
             <section id="signed-out" class="card">
@@ -306,6 +314,17 @@
         <p>&copy; Madnik Limited. Easy VAT is a mobile app for iOS and Android.</p>
     </footer>
 
+    <!-- If Supabase sends you to Site URL root with #access_token, forward to this page -->
+    <script>
+    (function () {
+      var hash = window.location.hash || "";
+      if (hash.indexOf("access_token") === -1) return;
+      if (window.location.pathname.indexOf("easy-vat") !== -1) return;
+      var base =
+        (window.location.origin || "") + "/product/easy-vat/index.html";
+      window.location.replace(base + hash);
+    })();
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../../js/config.js"></script>
     <script src="../../js/easy-vat-billing.js"></script>
