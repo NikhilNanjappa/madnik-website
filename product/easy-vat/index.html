@@ -1,44 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Easy VAT — Capture and Calculate VAT. Manage your plan and account. AI calculates VAT instantly from invoices. UK VAT made simple.">
-    <title>Easy VAT — Plans | MADNIK</title>
+    <meta name="description" content="Easy VAT — AI-powered UK invoice capture and VAT tracking. Snap or upload invoices, see your period total in seconds. Download on the App Store.">
+    <title>Easy VAT — UK VAT from invoices | MADNIK</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Matches iOS/Android LoginView + DashboardDS */
         :root {
-            --login-bg: #f7f7f9;
-            --text-primary: #111827;
-            --text: #1e293b;
-            --text-light: #64748b;
-            --ev-navy: #0f1d39;
-            --ev-mint: #48c9b0;
+            --bg: #f7f7f9;
             --card: #ffffff;
+            --text: #111827;
+            --muted: #64748b;
             --border: #e2e8f0;
-            --google-border: #747577;
-            --google-label: #3c4043;
-            --sso-radius: 8px;
-            --sso-pad-y: 12px;
-            --sso-logo: 20px;
-            --sso-gap: 8px;
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --mint: #10b981;
+            --navy: #0f172a;
+            --radius: 16px;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             color: var(--text);
-            background: var(--login-bg);
+            background: var(--bg);
             line-height: 1.65;
             -webkit-font-smoothing: antialiased;
         }
         h1, h2, h3 { font-family: 'Syne', sans-serif; letter-spacing: -0.02em; }
+        a { color: var(--primary); }
         .nav {
             background: rgba(255,255,255,0.95);
             border-bottom: 1px solid var(--border);
-            padding: 1rem 2rem;
+            padding: 1rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -46,7 +42,7 @@
             gap: 1rem;
         }
         .nav a { text-decoration: none; color: var(--text); font-weight: 500; }
-        .nav .logo {
+        .logo {
             font-family: 'Syne', sans-serif;
             font-weight: 800;
             background: linear-gradient(135deg, #3b82f6, #8b5cf6);
@@ -54,192 +50,199 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .container { max-width: 480px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
-        .login-header {
+        .container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
+        .hero {
+            padding: 3.5rem 0 2.5rem;
             text-align: center;
-            margin-bottom: 1.5rem;
         }
-        .login-header img {
-            width: 72px;
-            height: 72px;
-            border-radius: 16px;
-            margin: 0 auto 12px;
-            display: block;
-            box-shadow: 0 4px 16px rgba(15, 29, 57, 0.12);
-        }
-        .login-header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 0.35rem;
-        }
-        .login-header .subtitle {
-            font-size: 1.125rem;
+        .hero-badge {
+            display: inline-block;
+            background: #eff6ff;
+            color: var(--primary-dark);
+            font-size: 0.8125rem;
             font-weight: 600;
-            color: var(--ev-navy);
-            margin-bottom: 0.5rem;
+            padding: 0.35rem 0.85rem;
+            border-radius: 999px;
+            margin-bottom: 1.25rem;
         }
-        .login-header .tagline {
-            font-size: 1rem;
-            color: var(--text-light);
-            max-width: 400px;
-            margin: 0 auto;
-            line-height: 1.55;
-        }
-        .card {
-            background: var(--card);
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            padding: 1.75rem 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 4px 20px rgba(15, 29, 57, 0.05);
-        }
-        .card h2 {
-            font-size: 1.125rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-            text-align: center;
-            font-weight: 700;
-        }
-        .card .helper {
-            font-size: 0.9375rem;
-            color: var(--text-light);
-            text-align: center;
-            margin-bottom: 0.25rem;
-            line-height: 1.5;
-        }
-        .card .helper strong { color: var(--text); font-weight: 600; }
-        /* SSO buttons — same layout as LoginView.swift */
-        .sso-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 1.25rem;
-            width: 100%;
-        }
-        .btn-sso {
+        .app-mark {
+            width: 80px;
+            height: 80px;
+            border-radius: 18px;
+            background: linear-gradient(145deg, #3b82f6, #10b981);
+            margin: 0 auto 1.25rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: var(--sso-gap);
-            width: 100%;
-            padding: var(--sso-pad-y) 16px;
-            border-radius: var(--sso-radius);
-            font-family: inherit;
-            font-size: 1.0625rem;
-            font-weight: 600;
-            line-height: 1.25;
-            cursor: pointer;
-            transition: opacity 0.15s ease, box-shadow 0.15s ease;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .btn-sso:hover { opacity: 0.94; }
-        .btn-sso:active { opacity: 0.88; }
-        .btn-sso:focus-visible {
-            outline: 2px solid var(--ev-mint);
-            outline-offset: 2px;
-        }
-        .btn-google {
-            background: #ffffff;
-            color: var(--google-label);
-            border: 1px solid var(--google-border);
-        }
-        .btn-apple {
-            background: #000000;
-            color: #ffffff;
-            border: none;
-        }
-        .btn-sso-icon {
-            width: var(--sso-logo);
-            height: var(--sso-logo);
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .btn-sso-icon svg {
-            width: var(--sso-logo);
-            height: var(--sso-logo);
-            display: block;
-        }
-        .btn-sso-label { white-space: nowrap; }
-        .hidden { display: none !important; }
-        #user-email { font-weight: 600; color: var(--ev-navy); }
-        .plans-section h2 {
-            font-size: 1.25rem;
-            margin: 1.75rem 0 1rem;
-            color: var(--text-primary);
-        }
-        .plans-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-        @media (min-width: 640px) {
-            .container { max-width: 960px; }
-            .login-block { max-width: 400px; margin: 0 auto; }
-            .plans-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
-        }
-        .plan-card {
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 1.5rem;
-            background: var(--login-bg);
-        }
-        .plan-card h3 { font-size: 1.25rem; color: var(--ev-navy); margin-bottom: 0.5rem; }
-        .plan-price .amount { font-size: 2rem; font-weight: 800; }
-        .plan-price .period { color: var(--text-light); font-size: 0.95rem; }
-        .plan-limit { margin: 0.75rem 0 1.25rem; color: var(--text-light); font-size: 0.95rem; }
-        .btn-plan {
-            width: 100%;
-            background: var(--ev-navy);
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.75rem;
             color: #fff;
-            padding: 0.75rem 1rem;
-            border: none;
-            border-radius: 10px;
+            box-shadow: 0 12px 32px rgba(59, 130, 246, 0.25);
+        }
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            max-width: 720px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hero .lead {
+            font-size: 1.125rem;
+            color: var(--muted);
+            max-width: 640px;
+            margin: 0 auto 2rem;
+        }
+        .cta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+        }
+        .btn-appstore {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.65rem;
+            background: var(--navy);
+            color: #fff;
+            text-decoration: none;
+            padding: 0.85rem 1.35rem;
+            border-radius: 12px;
             font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
         }
-        .btn-plan:hover { background: #1a2d52; }
-        .btn-ghost {
-            background: transparent;
-            color: var(--text-light);
-            border: none;
-            text-decoration: underline;
-            padding: 0.5rem 0;
-            font-size: 0.95rem;
-            cursor: pointer;
-            margin-top: 0.5rem;
+        .btn-appstore:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.2);
         }
-        .plans-all-set { color: var(--text-light); padding: 1rem 0; }
-        .status-msg { margin-top: 1rem; font-size: 0.95rem; text-align: center; }
-        .status-msg.ok { color: #047857; }
-        .status-msg.error { color: #b91c1c; }
-        .config-error {
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-            color: #991b1b;
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
+        .btn-appstore svg { width: 22px; height: 22px; fill: currentColor; }
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.85rem 1.35rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
         }
-        .trust {
-            font-size: 0.875rem;
-            color: var(--text-light);
-            margin-top: 1.5rem;
+        .section { padding: 3rem 0; }
+        .section-title {
             text-align: center;
-            line-height: 1.6;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 0.75rem;
         }
-        .trust a { color: #3b82f6; }
+        .section-sub {
+            text-align: center;
+            color: var(--muted);
+            max-width: 560px;
+            margin: 0 auto 2.5rem;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+        }
+        .feature {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+        }
+        .feature-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+        .feature h3 { font-size: 1.0625rem; margin-bottom: 0.5rem; }
+        .feature p { color: var(--muted); font-size: 0.9375rem; }
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            counter-reset: step;
+        }
+        .step {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 1.75rem 1.5rem;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+        .step::before {
+            counter-increment: step;
+            content: counter(step);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+        .step h3 { font-size: 1.0625rem; margin-bottom: 0.5rem; }
+        .step p { color: var(--muted); font-size: 0.9375rem; }
+        .pricing {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem 1.5rem;
+        }
+        .plans {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .plan {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 1.25rem;
+            border: 1px solid var(--border);
+        }
+        .plan h3 { font-size: 1.125rem; color: var(--navy); margin-bottom: 0.35rem; }
+        .plan .price {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 800;
+        }
+        .plan .price span { font-size: 0.9rem; font-weight: 500; color: var(--muted); }
+        .plan p { color: var(--muted); font-size: 0.875rem; margin-top: 0.5rem; }
+        .pricing-note {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9375rem;
+        }
+        .cta-band {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
+            color: #fff;
+            border-radius: var(--radius);
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            margin: 1rem 0 3rem;
+        }
+        .cta-band h2 { color: #fff; margin-bottom: 0.75rem; }
+        .cta-band p { color: #cbd5e1; max-width: 520px; margin: 0 auto 1.5rem; }
+        .legal {
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--muted);
+            padding: 2rem 0 3rem;
+            border-top: 1px solid var(--border);
+        }
+        .legal a { margin: 0 0.5rem; }
         footer {
             text-align: center;
-            padding: 2rem 1.5rem;
-            font-size: 0.85rem;
-            color: var(--text-light);
-            border-top: 1px solid var(--border);
+            padding: 1.5rem;
+            font-size: 0.8125rem;
+            color: var(--muted);
             background: #fff;
+            border-top: 1px solid var(--border);
         }
     </style>
 </head>
@@ -250,83 +253,133 @@
             <a href="../../index.html">Home</a>
             &nbsp;·&nbsp;
             <a href="../../privacy.html">Privacy</a>
+            &nbsp;·&nbsp;
+            <a href="../../terms.html">Terms</a>
         </div>
     </nav>
 
-    <main class="container">
-        <div id="config-error" class="config-error hidden">
-            Site configuration is missing. Copy <code>js/config.example.js</code> to <code>js/config.js</code> and add your Supabase publishable key.
-        </div>
+    <main>
+        <section class="hero container">
+            <span class="hero-badge">Built for UK VAT</span>
+            <div class="app-mark" aria-hidden="true">EV</div>
+            <h1>Invoice in. VAT total out.</h1>
+            <p class="lead">
+                Easy VAT uses AI to read UK invoices from photos and PDFs, extract VAT amounts, and keep your current period total on track—without spreadsheet stress.
+            </p>
+            <div class="cta-row">
+                <a id="app-store-link" class="btn-appstore" href="https://apps.apple.com/app/easy-vat/id0000000000" rel="noopener">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                    Download on the App Store
+                </a>
+                <a class="btn-secondary" href="#how-it-works">See how it works</a>
+            </div>
+        </section>
 
-        <div class="login-block">
-            <header class="login-header">
-                <img src="../../assets/easyvat-logo.png" alt="" width="72" height="72">
-                <h1>Easy VAT</h1>
-                <p class="subtitle">Capture and Calculate VAT</p>
-                <p class="tagline">AI calculates VAT instantly from invoices. Track your total VAT in your current cycle. Calculating &amp; tracking UK VAT made simple.</p>
-            </header>
+        <section class="section container">
+            <h2 class="section-title">Built for how you actually work</h2>
+            <p class="section-sub">Mobile-first VAT tracking for sole traders, freelancers, and small UK teams.</p>
+            <div class="features">
+                <article class="feature">
+                    <div class="feature-icon">📸</div>
+                    <h3>AI invoice capture</h3>
+                    <p>Photograph receipts or upload PDFs and images—VAT is extracted automatically.</p>
+                </article>
+                <article class="feature">
+                    <div class="feature-icon">📊</div>
+                    <h3>Live period total</h3>
+                    <p>See your running VAT total for the current cycle at a glance on the dashboard.</p>
+                </article>
+                <article class="feature">
+                    <div class="feature-icon">📁</div>
+                    <h3>Smart archiving</h3>
+                    <p>Finish a VAT period in one tap and keep invoices organised for your records.</p>
+                </article>
+                <article class="feature">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Secure by design</h3>
+                    <p>Encrypted cloud storage when you sign in. Privacy policy and terms linked in-app.</p>
+                </article>
+            </div>
+        </section>
 
-            <section id="signed-out" class="card">
-                <h2>Sign in to continue</h2>
-                <p class="helper">Use the <strong>same Google or Apple account</strong> as in the Easy VAT app on your phone.</p>
-                <div class="sso-stack">
-                    <button type="button" class="btn-sso btn-google" id="sign-in-google" aria-label="Sign in with Google">
-                        <span class="btn-sso-icon" aria-hidden="true">
-                            <img src="../../assets/google-g.svg" alt="" width="20" height="20">
-                        </span>
-                        <span class="btn-sso-label">Sign in with Google</span>
-                    </button>
-                    <button type="button" class="btn-sso btn-apple" id="sign-in-apple" aria-label="Sign in with Apple">
-                        <span class="btn-sso-icon" aria-hidden="true">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                <path d="M17.05 12.64c.03-2.31 1.89-3.42 1.97-3.48-1.07-1.56-2.73-1.77-3.32-1.8-1.41-.14-2.75.83-3.47.83-.72 0-1.83-.81-3.01-.79-1.55.02-2.98.9-3.78 2.29-1.61 2.79-.41 6.92 1.16 9.19.77 1.11 1.69 2.35 2.9 2.31 1.17-.05 1.61-.75 3.03-.75 1.42 0 1.82.75 3.05.72 1.26-.02 2.06-1.13 2.82-2.24.89-1.3 1.26-2.56 1.28-2.62-.03-.01-2.46-.94-2.49-3.74zm-2.53-7.85c.65-.79 1.08-1.89.96-2.99-.93.04-2.05.62-2.72 1.41-.6.69-1.12 1.8-.98 2.86 1.04.08 2.09-.53 2.74-1.28z"/>
-                            </svg>
-                        </span>
-                        <span class="btn-sso-label">Sign in with Apple</span>
-                    </button>
+        <section class="section container" id="how-it-works">
+            <h2 class="section-title">How it works</h2>
+            <p class="section-sub">Get value in minutes—no account required to try the core tool.</p>
+            <div class="steps">
+                <article class="step">
+                    <h3>Try it free</h3>
+                    <p>Open the app and use the demo to upload one real invoice—no sign-up needed.</p>
+                </article>
+                <article class="step">
+                    <h3>Upload &amp; extract</h3>
+                    <p>Add invoices from camera, files, or share sheet. AI reads the VAT for you.</p>
+                </article>
+                <article class="step">
+                    <h3>Subscribe in-app</h3>
+                    <p>Sign in with Apple or Google and choose a plan in Profile when you need more volume.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section container">
+            <h2 class="section-title">Simple monthly plans</h2>
+            <p class="section-sub">Subscriptions are managed in the app via the App Store—choose what fits your invoice volume.</p>
+            <div class="pricing">
+                <div class="plans">
+                    <article class="plan">
+                        <h3>Silver</h3>
+                        <p class="price">£2.99 <span>/ month</span></p>
+                        <p>10 invoices per billing period</p>
+                    </article>
+                    <article class="plan">
+                        <h3>Gold</h3>
+                        <p class="price">£6.99 <span>/ month</span></p>
+                        <p>50 invoices per billing period</p>
+                    </article>
+                    <article class="plan">
+                        <h3>Platinum</h3>
+                        <p class="price">£9.99 <span>/ month</span></p>
+                        <p>Unlimited invoices</p>
+                    </article>
                 </div>
-            </section>
-
-            <section id="signed-in" class="card hidden">
-                <h2>Your account</h2>
-                <p style="text-align:center;">Signed in as <span id="user-email"></span></p>
-                <p class="helper" style="margin-top:0.75rem;">
-                    After payment, open the Easy VAT app — your plan updates automatically.
+                <p class="pricing-note">
+                    Plans renew monthly through the App Store. Manage or cancel anytime in iPhone Settings → Apple ID → Subscriptions.
                 </p>
-                <p style="text-align:center;">
-                    <button type="button" class="btn-ghost" id="sign-out">Sign out</button>
-                </p>
-                <div class="plans-section">
-                    <h2>Choose a plan</h2>
-                    <div id="plans" class="plans-grid"></div>
-                    <p id="status" class="status-msg" hidden></p>
-                </div>
-            </section>
-        </div>
+            </div>
+        </section>
 
-        <p class="trust">
-            Payments are processed by Stripe. Madnik Limited · <a href="../../privacy.html">Privacy policy</a> ·
+        <section class="container">
+            <div class="cta-band">
+                <h2>Ready to simplify UK VAT?</h2>
+                <p>Download Easy VAT on iPhone and turn invoice admin into a 30-second habit.</p>
+                <a class="btn-appstore app-store-link-secondary" href="https://apps.apple.com/app/easy-vat/id0000000000" rel="noopener">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                    Get Easy VAT on the App Store
+                </a>
+            </div>
+        </section>
+
+        <p class="legal container">
+            <a href="../../privacy.html">Privacy Policy</a>
+            ·
+            <a href="../../terms.html">Terms of Use</a>
+            ·
             <a href="mailto:info@madnik.co.uk">info@madnik.co.uk</a>
         </p>
     </main>
 
     <footer>
-        <p>&copy; Madnik Limited. Easy VAT is a mobile app for iOS and Android.</p>
+        <p>&copy; Madnik Limited. Easy VAT is available on the App Store for iPhone.</p>
     </footer>
 
-    <!-- If Supabase sends you to Site URL root with #access_token, forward to this page -->
+    <!-- Replace id0000000000 with your App Store app ID when live -->
     <script>
     (function () {
-      var hash = window.location.hash || "";
-      if (hash.indexOf("access_token") === -1) return;
-      if (window.location.pathname.indexOf("easy-vat") !== -1) return;
-      var base =
-        (window.location.origin || "") + "/product/easy-vat/index.html";
-      window.location.replace(base + hash);
+      var APP_STORE_URL = "https://apps.apple.com/app/easy-vat/id0000000000";
+      document.querySelectorAll("#app-store-link, .app-store-link-secondary").forEach(function (el) {
+        el.href = APP_STORE_URL;
+      });
     })();
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="../../js/config.js"></script>
-    <script src="../../js/easy-vat-billing.js"></script>
 </body>
 </html>
